@@ -1,4 +1,4 @@
-package com.wsw.springbootkafka;
+package com.wsw.springbootkafka.listener;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ConsumerListener {
-    @KafkaListener(id = "wswGroup", topics = "testTopic")
+    @KafkaListener(id = "consumer1", groupId = "wswGroup", topics = "wswTopic")
     public void onMessage(String message) {
         System.out.println(message);
     }
