@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ConsumerListener {
-    @KafkaListener(topics = "testTopic")
+    @KafkaListener(id = "wswGroup", topics = "testTopic")
     public void onMessage(String message) {
         System.out.println(message);
     }
