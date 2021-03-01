@@ -2,9 +2,9 @@ package com.wsw.springbootkafka.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,12 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class sendMessageController {
+    @Value("${kafka.topic}")
+    private String topic;
+
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
 
     @GetMapping("/message/send")
     public void send(@RequestParam String message) {
-        kafkaTemplate.send("wswTopic", message).addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+        kafkaTemplate.send(topic, message);
+        /*kafkaTemplate.send("wswTopic", message).addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
             @Override
             public void onFailure(Throwable throwable) {
                 log.error("消息发送失败! " + throwable.getMessage());
@@ -34,6 +38,6 @@ public class sendMessageController {
                 log.info("消息发送成功! " + result.getRecordMetadata().topic() + "-" + result.getRecordMetadata().partition() + "-" +
                         result.getRecordMetadata().offset());
             }
-        });
+        });*/
     }
 }
